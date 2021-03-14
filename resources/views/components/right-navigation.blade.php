@@ -27,9 +27,6 @@
                 </form>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('routes') }}">Routen</a>
-        </li>
     @endguest
 </ul>
 
