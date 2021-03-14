@@ -28,7 +28,7 @@ trait CSVSeeder {
         if($hasHeader) {
             $header = str_getcsv(array_shift($lines), $this->delimiter, $this->enclosure, $this->escape);
             array_walk($header, function (&$v) {
-                $v = str_replace('/','-', strtolower($v));
+                $v = str_replace('beguenstigter/zahlungspflichtiger','wer', strtolower($v));
             });
             foreach($lines as $line) {
                 $row = str_getcsv($line, $this->delimiter, $this->enclosure, $this->escape);

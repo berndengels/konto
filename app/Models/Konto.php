@@ -46,7 +46,7 @@ class Konto extends Model
         'valutadatum',
         'buchungstext',
         'verwendungszweck',
-        'beguenstigter-zahlungspflichtiger',
+        'wer',
         'kontonummer',
         'blz',
         'betrag',

@@ -14,7 +14,8 @@ class KontoController extends Controller
      */
     public function index()
     {
-        //
+        $data = Konto::paginate(100);
+        return view('public.konto.index', compact('data'));
     }
 
     /**
@@ -24,7 +25,6 @@ class KontoController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
