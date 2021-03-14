@@ -10,6 +10,18 @@ use {{ namespacedParentModel }};
 class {{ class }} extends Controller
 {
     /**
+     * Display the specified resource.
+     *
+     * @param  \{{ namespacedParentModel }}  ${{ parentModelVariable }}
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{ parentModel }} ${{ parentModelVariable }}, {{ model }} ${{ modelVariable }})
+    {
+        //
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param  \{{ namespacedParentModel }}  ${{ parentModelVariable }}
@@ -28,18 +40,6 @@ class {{ class }} extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, {{ parentModel }} ${{ parentModelVariable }})
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \{{ namespacedParentModel }}  ${{ parentModelVariable }}
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return \Illuminate\Http\Response
-     */
-    public function show({{ parentModel }} ${{ parentModelVariable }}, {{ model }} ${{ modelVariable }})
     {
         //
     }
