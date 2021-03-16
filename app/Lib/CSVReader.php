@@ -3,7 +3,7 @@ namespace App\Lib;
 
 use Illuminate\Support\Str;
 
-trait CSVSeeder {
+trait CSVReader {
 
     public $delimiter = ';';
     public $enclosure = "\"";

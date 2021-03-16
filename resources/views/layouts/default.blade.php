@@ -14,12 +14,12 @@
         @show
     </title>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}?t={{ $currentTime }}" defer></script>
+    <script src="{{ asset('js/app.js') }}?t={{ $currentTime }}"></script>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}?t={{ $currentTime }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div id="main">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -40,9 +40,9 @@
         <main class="py-4">
             <div class="container">
                 <div class="row justify-content-center">
+                    <div id="tooltip"></div>
                     <div class="col-md-12">
                         <div class="card">
-
                             <div class="card-header">
                                 <h3>@yield('header')</h3>
                             </div>
@@ -57,5 +57,6 @@
             </div>
         </main>
     </div>
+@yield('inline-scripts')
 </body>
 </html>

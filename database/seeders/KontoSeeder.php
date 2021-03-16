@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Lib\CSVSeeder;
+use App\Lib\CSVReader;
 use App\Models\Konto;
 use Illuminate\Database\Seeder;
 
 class KontoSeeder extends Seeder
 {
-    use CSVSeeder;
+    use CSVReader;
     /**
      * Run the database seeds.
      *

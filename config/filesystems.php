@@ -40,6 +40,32 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+            'permissions' => [
+                'file' => [
+                    'public' => 0666,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0777,
+                    'private' => 0700,
+                ],
+            ],
+        ],
+        'database' => [
+            'driver' => 'local',
+            'root' => storage_path('app/database/uploads'),
+//            'url' => env('APP_URL').'/storage/database',
+            'visibility' => 'private',
+            'permissions' => [
+                'file' => [
+                    'public' => 0666,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0777,
+                    'private' => 0700,
+                ],
+            ],
         ],
 
         's3' => [

@@ -19,7 +19,7 @@ class CreateKontoTable extends Migration
             $table->date('valutadatum');
             $table->string('buchungstext', 200)->nullable()->index();
             $table->text('verwendungszweck')->nullable()->index();
-            $table->string('wer', 200)->nullable();
+            $table->string('wer', 200)->nullable()->index();
             $table->string('kontonummer', 50)->nullable();
             $table->string('blz', 50)->nullable();
             $table->decimal('betrag', 10,2)->nullable()->index();

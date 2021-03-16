@@ -2,9 +2,9 @@
 namespace App\Models;
 
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * App\Models\Konto
@@ -38,9 +38,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Konto extends Model
 {
-    use HasFactory;
+    use Sortable;
 
     protected $table='konto';
+    protected $appends = ['buchungstagFormated'];
+    protected $dateFormat = 'd.m.Y';
+    protected $dates = ['buchungstag'];
     protected $fillabe = [
         'buchungstag',
         'valutadatum',
@@ -53,4 +56,9 @@ class Konto extends Model
         'waehrung',
         'info',
     ];
+    public $sortable = ['id', 'wer', 'betrag', 'buchungstag'];
+
+    public function getBuchungstagFormatedAttribute(){
+        return $this->buchungstag->format('d.m.Y');
+    }
 }

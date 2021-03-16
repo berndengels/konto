@@ -1,8 +1,48 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 @import 'variables';
 @import '~bootstrap/scss/bootstrap';
-//@import '~@fortawesome/fontawesome-free/css/all.css';
+@import '~@fortawesome/fontawesome-free/css/all.css';
 
 body {
     font-size: 0.7rem;
+}
+th {
+    text-transform: uppercase;
+}
+
+#tooltip {
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    padding: 10px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #00a;
+    border-radius: 10px;
+    z-index: 1000;
+    display: none;
+
+    table {
+        &.tblInfo {
+            tr {
+                td,th {
+                    color: #00a;
+                    max-width: 230px;
+                }
+            }
+        }
+    }
+}
+.tblItems {
+    tr:hover {
+        cursor: pointer;
+        background-color: #00a !important;
+        td {
+            color: #fff !important;
+        }
+    }
+}
+
+.selected {
+    color: #fff;
 }
