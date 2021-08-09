@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
-@section('title', 'Konto')
-@section('header', 'Konto')
+@section('title', 'Giro-Konto')
+@section('header', ' Giro-Konto DE40 1005 0000 0014 1083 72')
 @section('content')
     @if($data->total() > 0)
         <div>
