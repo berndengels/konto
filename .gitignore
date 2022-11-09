@@ -17,3 +17,6 @@ npm-debug.log
 yarn-error.log
 /package.json-lock
 /composer.lock
+/_ide_helper.php
+/.phpstorm.meta.php
+/perms

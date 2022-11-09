@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">Home</div>
                 <div class="card-body">
-                    <p>My Konto Page</p>
+                    <p>My Konto</p>
                 </div>
             </div>
         </div>

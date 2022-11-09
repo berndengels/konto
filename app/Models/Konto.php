@@ -41,7 +41,6 @@ class Konto extends Model
     use Sortable;
 
     protected $table='konto';
-    protected $appends = ['buchungstagFormated'];
     protected $dateFormat = 'd.m.Y';
     protected $dates = ['buchungstag'];
     protected $fillabe = [
@@ -56,9 +55,5 @@ class Konto extends Model
         'waehrung',
         'info',
     ];
-    public $sortable = ['id', 'wer', 'betrag', 'buchungstag'];
-
-    public function getBuchungstagFormatedAttribute(){
-        return $this->buchungstag->format('d.m.Y');
-    }
+    public $sortable = ['wer', 'betrag', 'buchungstag'];
 }

@@ -42,7 +42,22 @@ th {
         }
     }
 }
-
+.form-group {
+    .form-link-wrapper {
+        display: flex;
+        flex-flow: column nowrap;
+        a {
+            margin-top: 0.2rem;
+            display: inline-flex;
+        }
+    }
+}
+a {
+    .btn {
+        line-height: 1;
+        border: 1px solid red;
+    }
+}
 .selected {
     color: #fff;
 }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Lib;
 
-use Illuminate\Support\Str;
+use App\Exceptions\WrongUploadException;
 
 trait CSVReader {
 
@@ -12,18 +12,32 @@ trait CSVReader {
     public $convertToDate = null;
     public $convertToDecimal = null;
 
-    public function csv_to_array($filename = '', $hasHeader = true) {
+    private function checkFormat($header, $format) {
+        if($header !== $format ) {
+            return false;
+        }
+        return true;
+    }
+
+    public function csv2Array($filename = '', $hasHeader = true) {
         ini_set("auto_detect_line_endings", true); // If having issues on iOS
 
         if (!file_exists($filename) || !is_readable($filename)) {
             return false;
         }
+
         $except = ($this->except && is_array($this->except) && count($this->except) > 0) ? $this->except : null;
         $convertToDate = ($this->convertToDate && is_array($this->convertToDate) && count($this->convertToDate) > 0) ? $this->convertToDate : null;
         $convertToDecimal = ($this->convertToDecimal && is_array($this->convertToDecimal) && count($this->convertToDecimal) > 0) ? $this->convertToDecimal : null;
 
         $data   = [];
         $lines  = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        if($hasHeader) {
+            if(! $this->checkFormat($lines[0], config('konto.format'))) {
+                throw new WrongUploadException('Wrong Import Format');
+            }
+        }
 
         if($hasHeader) {
             $header = str_getcsv(array_shift($lines), $this->delimiter, $this->enclosure, $this->escape);

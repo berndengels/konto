@@ -9,22 +9,29 @@
             {{-- print_r(@request()->except(['_token'])) --}}
             </pre>
             <pre>{{-- $sql --}}</pre-->
-            <x-form id="frm" :action="route('konto')" method="post">
-                <x-form-group class="d-flex p-0" inline>
+            <x-form id="frm" class="m-0 p-0" :action="route('konto')" method="post">
+                <x-form-group class="d-flex p-0 m-0" inline>
                     <x-form-select class="m-1 d-inline-block" id="wer" name="wer" label="Wer" :options="$uniq" :default="$wer" />
                     <x-form-input class="m-1 ml-3" type="date" name="start" label="Von" :value="$start" />
                     <x-form-input class="m-1" type="date" name="end" label="Bis" :value="$end" />
                     <x-form-input class="m-1" type="submit" name="filter" label="Suche" value="filter" />
                     <x-form-input class="m-1" type="button" name="reset" label="Reset" value="Reset" />
                 </x-form-group>
-                <x-form-group class="d-flex p-0 mt-0" inline>
-                    <x-form-input class="m-1 col-12" type="submit" name="group" value="group by Wer" />
+                <x-form-group class="d-inline-block p-0 my-0" inline>
+                    <x-form-input class="m-1 col-12 btn btn-sm btn-primary" type="submit" name="group" value="groupBy Wer" />
+                    <div class="d-inline-block m-0 form-link-wrapper">
+                        <a class="btn-sm btn-primary p-2" href="{{ route('konto', request()->merge(['modus'=>'plus'])->except('_token') ) }}">Einnahmen</a>
+                        <a class="btn-sm btn-primary ml-4 p-2 " href="{{ route('konto', request()->merge(['modus'=>'minus'])->except('_token') ) }}">Ausgaben</a>
+                    </div>
                 </x-form-group>
             </x-form>
         </div>
         {{ $data->appends(request()->except('_token'))->links() }}
-        <h5>Treffer: {{ $data->total() }}</h5>
-        <table class="table table-sm table-striped tblItems">
+        <h5>Treffer: {{ $count }}
+            <span class="ml-5"><b>Summe Einnahmen {{ str_replace('.',',',$sumRevenue) }} €</b></span>
+            <span class="ml-5"><b>Summer Ausgaben {{ str_replace('.',',',$sumExpenses) }} €</b></span>
+        </h5>
+        <table class="table table-sm table-striped tblItems mt-0">
             <tr>
                 @foreach($columns as $col)
                     <th>@sortablelink($col)</th>
@@ -32,14 +39,10 @@
             </tr>
         @foreach ($data as $item)
             <tr class="trItem" data-id="{{ $item->id }}">
-                @foreach($columns as $col)
-                    <td>{{ $item->$col }}</td>
-                @endforeach
-
-                <!--td>{{-- $item->buchungstag->format('d.m.Y') }}</td>
+                <td>{{ $item->buchungstag->format('d.m.Y') }}</td>
                 <td>{{ $item->wer }}</td>
                 <td>{{ $item->buchungstext }}</td>
-                <td>{{ $item->betrag --}}</td-->
+                <td>{{ $item->betrag }} €</td>
             </tr>
         @endforeach
         </table>

@@ -3,11 +3,13 @@ namespace App\Http\Controllers;
 
 use App\Lib\CSVReader;
 use App\Models\Konto;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\KontoResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use App\Exceptions\WrongUploadException;
 
 class KontoController extends Controller
 {
@@ -19,7 +21,13 @@ class KontoController extends Controller
 
     public function __construct()
     {
-        $this->uniq = Konto::query()->distinct('wer')->orderBy('wer')->get()->keyBy('wer')->map->wer->toArray();
+        $this->uniq = Konto::query()
+            ->distinct('wer')
+            ->orderBy('wer')
+            ->get()
+            ->keyBy('wer')
+            ->map->wer->toArray();
+
         $dates = Konto::query()
             ->selectRaw('MIN(buchungstag) start, MAX(buchungstag) end')
             ->get()
@@ -40,7 +48,9 @@ class KontoController extends Controller
         $group  = $request->post('group');
         $start  = $request->post('start');
         $end    = $request->post('end');
-        $columns = ['buchungstagFormated','wer','buchungstext','betrag'];
+        $modus  = $request->input('modus');
+
+        $columns = ['buchungstag','wer','buchungstext','betrag'];
         /**
          * @var $query Builder
          */
@@ -62,20 +72,32 @@ class KontoController extends Controller
             if($wer) {
                 $query->whereWer($wer);
             }
+            if($modus) {
+                if('plus' === $modus) {
+                    $query->where('betrag','>',0);
+                } else {
+                    $query->where('betrag','<',0);
+                }
+            }
         } else {
             $query->orderBy('buchungstag','desc');
         }
-        $count  = $query->count();
+        $all    = $query->get();
+
+        $sumRevenue = $all->filter(fn($item) => $item['betrag'] > 0)
+            ->sum(fn($item) => $item['betrag'])
+        ;
+        $sumExpenses = $all->filter(fn($item) => $item['betrag'] < 0)
+            ->sum(fn($item) => $item['betrag'])
+        ;
+
+        $count  = $all->count();
         $data   = $query->paginate(100);
         $sql    = $query->toSql();
         $uniq   = $this->uniq;
         $data   = KontoResource::collection($data);
 
-        return view('public.konto.index', compact('data','columns','uniq', 'wer', 'group', 'start', 'end', 'count','sql'));
-    }
-
-    public function seed(Request $request) {
-
+        return view('admin.konto.index', compact('data','columns','uniq', 'wer', 'group', 'start', 'end', 'count','sumRevenue','sumExpenses','sql'));
     }
 
     /**
@@ -86,8 +108,8 @@ class KontoController extends Controller
      */
     public function show(Konto $konto)
     {
-        $str = '"Umsatz get�tigt von";"Belegdatum";"Buchungsdatum";"Originalbetrag";"Originalw�hrung";"Umrechnungskurs";"Buchungsbetrag";"Buchungsw�hrung";"Transaktionsbeschreibung";"Transaktionsbeschreibung Zusatz";"Buchungsreferenz";"Geb�hrenschl�ssel";"L�nderkennzeichen";"BAR-Entgelt+Buchungsreferenz";"AEE+Buchungsreferenz";"Abrechnungskennzeichen"';
-        return response()->view('public.konto.show-ajax', compact('konto','str'));
+        $str = '"Umsatz getätigt von";"Belegdatum";"Buchungsdatum";"Originalbetrag";"Originalwährung";"Umrechnungskurs";"Buchungsbetrag";"Buchungswährung";"Transaktionsbeschreibung";"Transaktionsbeschreibung Zusatz";"Buchungsreferenz";"Gebührenschlüssel";"Länderkennzeichen";"BAR-Entgelt+Buchungsreferenz";"AEE+Buchungsreferenz";"Abrechnungskennzeichen"';
+        return response()->view('admin.konto.show-ajax', compact('konto','str'));
     }
 
     /**
@@ -97,7 +119,7 @@ class KontoController extends Controller
      */
     public function create()
     {
-        return view('public.konto.create');
+        return view('admin.konto.create');
     }
 
     /**
@@ -115,48 +137,22 @@ class KontoController extends Controller
         $this->except = ['auftragskonto'];
         $this->convertToDate = ['buchungstag','valutadatum'];
         $this->convertToDecimal = ['betrag'];
-        $data = $this->csv_to_array($csvFile);
+
         try {
-            Konto::insertOrIgnore($data);
-            @unlink($csvFile);
-        } catch(\Exception $e) {
-            @unlink($csvFile);
-            throw new \Exception($e->getMessage());
+            $data = $this->csv2Array($csvFile);
+            if($data) {
+                Konto::insertOrIgnore($data);
+                @unlink($csvFile);
+            }
         }
+        catch(WrongUploadException $e) {
+            return view('admin.konto.create', ['error' => $e->getMessage()]);
+        }
+        catch(Exception $e) {
+            @unlink($csvFile);
+            throw new Exception($e->getMessage());
+        }
+
         return redirect()->route('konto');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Konto $konto
-     * @return Response
-     */
-    public function edit(Konto $konto)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Konto $konto
-     * @return Response
-     */
-    public function update(Request $request, Konto $konto)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Konto $konto
-     * @return Response
-     */
-    public function destroy(Konto $konto)
-    {
-        //
     }
 }
