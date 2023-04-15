@@ -8,15 +8,13 @@
     <meta http-equiv="Expires" content="0" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <title>
-        @section('title')
-            Laravel Projekt
-        @show
-    </title>
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}?t={{ $currentTime }}"></script>
+    <title>@section('title')MyKonto@show</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}?t={{ $currentTime }}" rel="stylesheet">
+    @stack('styles')
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}?t={{ $currentTime }}"></script>
+    @stack('scripts')
 </head>
 <body>
     <div id="main">
@@ -57,6 +55,6 @@
             </div>
         </main>
     </div>
-@yield('inline-scripts')
+@stack('inline-scripts')
 </body>
 </html>

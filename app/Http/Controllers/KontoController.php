@@ -18,6 +18,11 @@ class KontoController extends Controller
     protected $uniq;
     protected $minDate;
     protected $maxDate;
+    protected $modi = [
+        null => 'Bitte wählen',
+        '+' => 'Einnahmen',
+        '-' => 'Ausgaben',
+    ];
 
     public function __construct()
     {
@@ -48,19 +53,19 @@ class KontoController extends Controller
         $group  = $request->post('group');
         $start  = $request->post('start');
         $end    = $request->post('end');
-        $modus  = $request->input('modus');
+        $modus  = $request->post('modus');
 
-        $columns = ['buchungstag','wer','buchungstext','betrag'];
         /**
          * @var $query Builder
          */
         $query = Konto::sortable();
+
         if(count($request->post()) > 0) {
             if($group) {
                 $columns = ['wer','betrag'];
                 $query->groupBy('wer')
                     ->selectRaw('wer,SUM(betrag) AS betrag')
-                    ->orderBy('betrag', 'desc')
+//                    ->orderBy('betrag', 'desc')
                 ;
             }
             if($start) {
@@ -73,16 +78,10 @@ class KontoController extends Controller
                 $query->whereWer($wer);
             }
             if($modus) {
-                if('plus' === $modus) {
-                    $query->where('betrag','>',0);
-                } else {
-                    $query->where('betrag','<',0);
-                }
+                $query->where('betrag',('+' === $modus) ? '>' : '<',0);
             }
-        } else {
-            $query->orderBy('buchungstag','desc');
         }
-        $all    = $query->get();
+        $all = $query->get();
 
         $sumRevenue = $all->filter(fn($item) => $item['betrag'] > 0)
             ->sum(fn($item) => $item['betrag'])
@@ -93,11 +92,11 @@ class KontoController extends Controller
 
         $count  = $all->count();
         $data   = $query->paginate(100);
-        $sql    = $query->toSql();
         $uniq   = $this->uniq;
+        $modi   = $this->modi;
         $data   = KontoResource::collection($data);
 
-        return view('admin.konto.index', compact('data','columns','uniq', 'wer', 'group', 'start', 'end', 'count','sumRevenue','sumExpenses','sql'));
+        return view('admin.konto.index', compact('data','uniq', 'wer', 'group', 'start', 'end', 'count','sumRevenue','sumExpenses','modi','modus'));
     }
 
     /**

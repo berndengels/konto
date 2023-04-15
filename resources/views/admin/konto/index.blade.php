@@ -5,13 +5,12 @@
 @section('content')
     @if($data->total() > 0)
         <div>
-            <!--pre>
-            {{-- print_r(@request()->except(['_token'])) --}}
-            </pre>
-            <pre>{{-- $sql --}}</pre-->
             <x-form id="frm" class="m-0 p-0" :action="route('konto')" method="post">
                 <x-form-group class="d-flex p-0 m-0" inline>
-                    <x-form-select class="m-1 d-inline-block" id="wer" name="wer" label="Wer" :options="$uniq" :default="$wer" />
+                    <x-form-select class="m-1 d-inline-block" id="wer" name="wer" label="Wer"
+                                   :options="$uniq" :default="$wer" />
+                    <x-form-select class="m-1 d-inline-block" id="modus" name="modus" label="Einnahmen oder Ausgaben"
+                                   :options="$modi" :default="$modus" />
                     <x-form-input class="m-1 ml-3" type="date" name="start" label="Von" :value="$start" />
                     <x-form-input class="m-1" type="date" name="end" label="Bis" :value="$end" />
                     <x-form-input class="m-1" type="submit" name="filter" label="Suche" value="filter" />
@@ -19,23 +18,20 @@
                 </x-form-group>
                 <x-form-group class="d-inline-block p-0 my-0" inline>
                     <x-form-input class="m-1 col-12 btn btn-sm btn-primary" type="submit" name="group" value="groupBy Wer" />
-                    <div class="d-inline-block m-0 form-link-wrapper">
-                        <a class="btn-sm btn-primary p-2" href="{{ route('konto', request()->merge(['modus'=>'plus'])->except('_token') ) }}">Einnahmen</a>
-                        <a class="btn-sm btn-primary ml-4 p-2 " href="{{ route('konto', request()->merge(['modus'=>'minus'])->except('_token') ) }}">Ausgaben</a>
-                    </div>
                 </x-form-group>
             </x-form>
         </div>
-        {{ $data->appends(request()->except('_token'))->links() }}
+        {{ $data->appends(request()->except(['_token']))->links() }}
         <h5>Treffer: {{ $count }}
             <span class="ml-5"><b>Summe Einnahmen {{ str_replace('.',',',$sumRevenue) }} €</b></span>
             <span class="ml-5"><b>Summer Ausgaben {{ str_replace('.',',',$sumExpenses) }} €</b></span>
         </h5>
         <table class="table table-sm table-striped tblItems mt-0">
             <tr>
-                @foreach($columns as $col)
-                    <th>@sortablelink($col)</th>
-                @endforeach
+                <th>@sortablelink('buchungstag')</th>
+                <th>@sortablelink('wer')</th>
+                <th>buchungstext</th>
+                <th>@sortablelink('betrag')</th>
             </tr>
         @foreach ($data as $item)
             <tr class="trItem" data-id="{{ $item->id }}">
@@ -46,13 +42,13 @@
             </tr>
         @endforeach
         </table>
-        {{ $data->appends(request()->except('_token'))->links() }}
+        {{ $data->appends(request()->except(['_token']))->links() }}
     @else
         <h5>Keine Daten vorhanden</h5>
     @endif
 @endsection
 
-@section('inline-scripts')
+@push('inline-scripts')
 <script>
     const $tooltip = $('#tooltip');
     $("#wer").change(e => {
@@ -69,4 +65,4 @@
     });
     @endif
 </script>
-@endsection
+@endpush

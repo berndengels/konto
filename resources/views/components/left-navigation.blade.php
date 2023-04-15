@@ -1,14 +1,13 @@
-
-<ul class="navbar-nav mr-auto">
+<ul class="navbar-nav mr-auto float-start">
     <li class="nav-item">
         <a class="nav-link" href="{{ route('home') }}">Home</a>
     </li>
     @auth
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('konto') }}">Konto</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('konto.create') }}">Upload</a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('konto') }}">Konto</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('konto.create') }}">Upload</a>
+        </li>
     @endauth
 </ul>

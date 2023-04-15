@@ -35,6 +35,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Konto whereVerwendungszweck($value)
  * @method static Builder|Konto whereWaehrung($value)
  * @mixin Eloquent
+ * @property string|null $wer
+ * @method static Builder|Konto sortable($defaultParameters = null)
+ * @method static Builder|Konto whereWer($value)
  */
 class Konto extends Model
 {
@@ -43,17 +46,10 @@ class Konto extends Model
     protected $table='konto';
     protected $dateFormat = 'd.m.Y';
     protected $dates = ['buchungstag'];
-    protected $fillabe = [
-        'buchungstag',
-        'valutadatum',
-        'buchungstext',
-        'verwendungszweck',
-        'wer',
-        'kontonummer',
-        'blz',
-        'betrag',
-        'waehrung',
-        'info',
+    protected $casts = [
+        'buchungstag'   => 'date:Y-m-d',
+        'betrag'    => 'float',
     ];
+    protected $guarded = ['id'];
     public $sortable = ['wer', 'betrag', 'buchungstag'];
 }

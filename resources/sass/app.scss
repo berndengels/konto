@@ -1,10 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito');
 @import 'variables';
-@import '~bootstrap/scss/bootstrap';
-@import '~@fortawesome/fontawesome-free/css/all.css';
+//@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap';
+@import '~material-icons';
 
 body {
-    font-size: 0.7rem;
+    font-size: .9rem;
+    font-family: Verdana, Arial;
+    font-weight: 200;
+    color: #666;
 }
 th {
     text-transform: uppercase;
@@ -43,6 +46,9 @@ th {
     }
 }
 .form-group {
+    select {
+//        max-width: 300px;
+    }
     .form-link-wrapper {
         display: flex;
         flex-flow: column nowrap;
