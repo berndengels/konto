@@ -13,10 +13,7 @@ trait CSVReader {
     public $convertToDecimal = null;
 
     private function checkFormat($header, $format) {
-        if($header !== $format ) {
-            return false;
-        }
-        return true;
+        return $header !== $format;
     }
 
     public function csv2Array($filename = '', $hasHeader = true) {
@@ -63,6 +60,7 @@ trait CSVReader {
                 $data[] = $row;
             }
         }
+
         return $data;
     }
 }
