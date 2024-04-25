@@ -89,6 +89,7 @@ class KontoController extends Controller
         $sumExpenses = $all->filter(fn($item) => $item['betrag'] < 0)
             ->sum(fn($item) => $item['betrag'])
         ;
+        $profit = $sumRevenue + $sumExpenses;
 
         $count  = $all->count();
         $data   = $query->paginate(100);
@@ -96,7 +97,7 @@ class KontoController extends Controller
         $modi   = $this->modi;
         $data   = KontoResource::collection($data);
 
-        return view('admin.konto.index', compact('data','uniq', 'wer', 'group', 'start', 'end', 'count','sumRevenue','sumExpenses','modi','modus'));
+        return view('admin.konto.index', compact('data','uniq', 'wer', 'group', 'start', 'end', 'count','sumRevenue','sumExpenses','modi','modus','profit'));
     }
 
     /**
@@ -148,8 +149,8 @@ class KontoController extends Controller
             return view('admin.konto.create', ['error' => $e->getMessage()]);
         }
         catch(Exception $e) {
-            @unlink($csvFile);
-            throw new Exception($e->getMessage());
+//            @unlink($csvFile);
+            throw new Exception($e);
         }
 
         return redirect()->route('konto');

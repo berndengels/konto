@@ -17,7 +17,7 @@ trait CSVReader {
     }
 
     public function csv2Array($filename = '', $hasHeader = true) {
-        ini_set("auto_detect_line_endings", true); // If having issues on iOS
+//        ini_set("auto_detect_line_endings", true); // If having issues on iOS
 
         if (!file_exists($filename) || !is_readable($filename)) {
             return false;
