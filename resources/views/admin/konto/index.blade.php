@@ -7,8 +7,8 @@
         <div>
             <x-form id="frm" class="m-0 p-0" :action="route('konto')" method="post">
                 <x-form-group class="d-flex p-0 m-0" inline>
-                    <x-form-select class="m-1 d-inline-block" id="wer" name="wer" label="Wer"
-                                   :options="$uniq" :default="$wer" />
+                    <x-form-select class="m-1 d-inline-block" id="wer" name="wer[]" label="Wer"
+                                   :options="$uniq" :default="$wer" multiple />
                     <x-form-select class="m-1 d-inline-block" id="modus" name="modus" label="Einnahmen oder Ausgaben"
                                    :options="$modi" :default="$modus" />
                     <x-form-input class="m-1 ml-3" type="date" name="start" label="Von" :value="$start" />
@@ -52,9 +52,11 @@
 @push('inline-scripts')
 <script>
     const $tooltip = $('#tooltip');
+/*
     $("#wer").change(e => {
         $("#frm").submit();
     });
+*/
     $("input[name=reset]").click(e => location.href = "{{ route('konto') }}")
     @if(!$group)
     $('.trItem').click(e => {

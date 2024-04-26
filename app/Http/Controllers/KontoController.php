@@ -31,7 +31,7 @@ class KontoController extends Controller
             ->orderBy('wer')
             ->get()
             ->keyBy('wer')
-            ->map->wer->toArray();
+            ->map->wer->prepend('--Bitte wählen--', '');
 
         $dates = Konto::query()
             ->selectRaw('MIN(buchungstag) start, MAX(buchungstag) end')
@@ -75,7 +75,7 @@ class KontoController extends Controller
                 $query->whereDate('buchungstag','<=', $end);
             }
             if($wer) {
-                $query->whereWer($wer);
+                $query->whereIn('wer', $wer);
             }
             if($modus) {
                 $query->where('betrag',('+' === $modus) ? '>' : '<',0);
