@@ -23,9 +23,9 @@
         </div>
         {{ $data->appends(request()->except(['_token']))->links() }}
         <h5>Treffer: {{ $count }}
-            <span class="ml-5 text-primary"><b>Einnahmen {{ str_replace('.',',',$sumRevenue) }} €</b></span>
-            <span class="ml-5 text-danger"><b>Ausgaben {{ str_replace('.',',',$sumExpenses) }} €</b></span>
-            <span class="ml-5 text-success"><b>Gewinn {{ str_replace('.',',',$profit) }} €</b></span>
+            <span class="ml-5 text-primary"><b>Einnahmen {{ number_format($sumRevenue, 2, ',', '.') }} €</b></span>
+            <span class="ml-5 text-danger"><b>Ausgaben {{ number_format($sumExpenses, 2, ',', '.') }} €</b></span>
+            <span class="ml-5 text-success"><b>Gewinn {{ number_format($profit, 2, ',', '.') }} €</b></span>
         </h5>
         <table class="table table-sm table-striped tblItems mt-0">
             <tr>
