@@ -38,7 +38,8 @@ th {
         }
     }
 }
-.tblItems {
+table.tblItems {
+    width: 100%;
     tr:hover {
         cursor: pointer;
         background-color: #00a !important;

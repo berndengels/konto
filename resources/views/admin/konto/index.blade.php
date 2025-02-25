@@ -27,7 +27,7 @@
             <span class="ml-5 text-danger"><b>Ausgaben {{ number_format($sumExpenses, 2, ',', '.') }} €</b></span>
             <span class="ml-5 text-success"><b>Gewinn {{ number_format($profit, 2, ',', '.') }} €</b></span>
         </h5>
-        <table class="table table-sm table-striped tblItems mt-0">
+        <table class="tblItems mt-0">
             <tr>
                 <th>@sortablelink('buchungstag')</th>
                 <th>@sortablelink('wer')</th>
